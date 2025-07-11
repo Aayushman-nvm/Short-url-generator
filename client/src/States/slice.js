@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  mode: "light",
   user: null,
   token: null,
 };
@@ -9,11 +8,18 @@ const initialState = {
 export const appSlice = createSlice({
   name: "app",
   initialState,
-  reducers: {},
+  reducers: {
+    setUser:(state, action)=>{
+      state.user=action.payload;
+    },
+    setToken:(state, action)=>{
+      state.token=action.payload;
+    },
+  },
 });
 
 const appReducer = appSlice.reducer;
 
-export const {} = appSlice.reducer;
+export const {setUser, setToken} = appSlice.actions;
 
 export default appReducer;
