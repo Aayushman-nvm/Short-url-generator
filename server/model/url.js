@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const urlSchema = new mongoose.Schema({
-  /*createdBy: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
-  },*/
+  },
   shortId: {
     type: String,
     required: true,
