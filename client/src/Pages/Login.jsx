@@ -2,6 +2,8 @@ import { Formik } from "formik"
 import * as yup from "yup"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {setUser, setToken} from "../States/slice.js";
 import Register from "../Components/Register";
 
 function Login() {
@@ -9,6 +11,7 @@ function Login() {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
   const navigate = useNavigate();
+  const dispatch=useDispatch();
 
   const loginSchema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Required"),
@@ -33,7 +36,6 @@ function Login() {
   }
 
   async function handleRegister(values, onSubmitProps) {
-    const formData = new FormData();
 
     const response = await fetch("http://localhost:5000/register", {
       method: "POST",
@@ -42,6 +44,7 @@ function Login() {
     });
 
     const registeredUser = await response.json();
+    console.log("Registered User: ", registeredUser);
 
     onSubmitProps.resetForm();
     if (registeredUser) {
@@ -59,9 +62,13 @@ function Login() {
     });
 
     const loginUser = await response.json();
-
+    console.log("Login user: ",loginUser);
+    console.log("USER: ",loginUser.user);
+    console.log("TOKEN: ",loginUser.token);
+    dispatch(setUser(loginUser.user));
+    dispatch(setToken(loginUser.token));
     onSubmitProps.resetForm();
-    if (registeredUser) {
+    if (loginUser) {
       navigate("/home");
     }
   };
