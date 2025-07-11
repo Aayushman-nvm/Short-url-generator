@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react"
+import {useSelector} from "react-redux"
 function HomePage() {
   const [reqUrl, setReqUrl] = useState("");
   const [data, setData]=useState(null);
+  const user=useSelector((state)=>state?.user);
+  const token=useSelector((state)=>state.token);
+  const userId=user._id;
 
   useEffect(() => {
     console.log(reqUrl);
@@ -12,12 +16,13 @@ function HomePage() {
       const response = await fetch("http://localhost:5000/url", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({url:reqUrl}),
+        body: JSON.stringify({url:reqUrl,id:userId}),
       });
       const data= await response.json();
       console.log("RESPONSE: ", data);
-      console.log("BODY URL", data.url);
-      console.log("BODY ID", data.id);
+      console.log("BODY URL", data.redirectUrl);
+      console.log("BODY ID", data.shortId);
+      console.log("ID: ",user+" Token: ",token);
       setData(data);
     } catch (error) {
       console.log(error);
