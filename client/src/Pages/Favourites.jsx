@@ -51,7 +51,7 @@ function Favourites() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-orange-900 text-white px-4 py-6">
+    <div className="min-h-screen text-white px-4 py-6">
       <h1 className="text-2xl font-bold mb-6 text-center">Your Favourite URLs</h1>
 
       {loading ? (
