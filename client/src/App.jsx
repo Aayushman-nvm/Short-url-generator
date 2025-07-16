@@ -11,7 +11,7 @@ function App() {
   const token = useSelector((state) => state.token);
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-white font-sans">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-black via-gray-900 to-orange-900 text-white font-sans">
       <BrowserRouter>
         <NavBar />
         <main className="flex-grow container mx-auto px-4 py-6">
