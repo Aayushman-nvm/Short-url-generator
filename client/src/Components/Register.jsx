@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Register({
     values,
     errors,
@@ -8,18 +6,20 @@ function Register({
     handleChange,
 }) {
     return (
-        <div>Register
+        <div>
             <input
                 placeholder="Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.name || ""}
-                name="name" />
+                name="name"
+                className="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-orange-400 mb-2"
+            />
             {touched.name && errors.name && (
-                <p className="text-red-500 text-sm">{errors.name}</p>
+                <p className="text-red-400 text-xs">{errors.name}</p>
             )}
         </div>
-    )
+    );
 }
 
-export default Register
+export default Register;
