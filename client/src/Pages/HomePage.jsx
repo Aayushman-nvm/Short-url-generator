@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
 function HomePage() {
   const [reqUrl, setReqUrl] = useState("");
@@ -15,7 +16,7 @@ function HomePage() {
 
   function isValidUrl(url) {
     const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/;
-    console.log("URL TEST: ",urlRegex.test(url))
+    console.log("URL TEST: ", urlRegex.test(url))
     return urlRegex.test(url);
   }
 
@@ -60,7 +61,7 @@ function HomePage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-orange-900 text-white px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen text-white px-4">
       <h1 className="text-2xl font-bold mb-4">Shorten Your URL</h1>
       <input
         onChange={(e) => setReqUrl(e.target.value)}
@@ -90,7 +91,7 @@ function HomePage() {
             onClick={handleLike}
             className="bg-orange-600 hover:bg-orange-500 text-white py-1 px-3 rounded transition"
           >
-            {data.liked ? "Unlike" : "Like"}
+            {data.liked ? <div className="flex space-x-2 px-2 items-center justify-center"><p>Unlike</p><ThumbsDown size={18} /></div> : <div className="flex space-x-2 px-2 items-center justify-center"><p>Like</p><ThumbsUp size={18} /></div>}
           </button>
         </div>
       )}
