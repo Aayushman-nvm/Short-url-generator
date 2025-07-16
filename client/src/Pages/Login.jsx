@@ -48,6 +48,7 @@ function Login() {
     const loginUser = await response.json();
     dispatch(setUser(loginUser.user));
     dispatch(setToken(loginUser.token));
+    console.log(loginUser)
     onSubmitProps.resetForm();
     if (loginUser) navigate("/home");
   }
@@ -61,7 +62,7 @@ function Login() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-orange-900 px-4">
+    <div className="flex justify-center items-center min-h-screen px-4">
       <div className="bg-black/70 p-6 rounded-2xl shadow-lg w-full max-w-sm text-white">
         <div className="flex items-center space-x-2 mb-6 justify-center">
           {isLogin ? <LogIn size={28} /> : <UserPlus size={28} />}
