@@ -1,19 +1,26 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { ThumbsUp, ThumbsDown, Trash2, Link as LinkIcon } from "lucide-react";
+
 function History() {
   const userId = useSelector((state) => state.user._id);
-  const [allUrl, setAllUrl] = useState();
-  const [deletedUrl, setDeletedUrl]=useState();
+  const [allUrl, setAllUrl] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   async function getAllUrl() {
-    const response = await fetch("http://localhost:5000/history", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ id: userId }),
-    });
-    const data = await response.json();
-    setAllUrl(data);
-    return data;
+    try {
+      const response = await fetch("http://localhost:5000/history", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: userId }),
+      });
+      const data = await response.json();
+      setAllUrl(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleLikedUrl(urlId, likeStatus) {
@@ -28,9 +35,9 @@ function History() {
 
       setAllUrl(prevUrls =>
         prevUrls.map(item =>
-          item._id === result._id ? result : item)
+          item._id === result._id ? result : item
+        )
       );
-
     } catch (error) {
       console.log(error);
     }
@@ -38,40 +45,74 @@ function History() {
 
   async function handleDeleteUrl(urlId) {
     try {
-      const response=await fetch("http://localhost:5000/delete",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({id:urlId, userId:userId })
+      const response = await fetch("http://localhost:5000/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: urlId, userId: userId }),
       });
-      const result=await response.json();
+      const result = await response.json();
       console.log(result);
+
       setAllUrl(result.allUrl);
-      setDeletedUrl(result.deletedUrl)
-      alert(`Successfully deleted url: ${deletedUrl.redirectUrl}`)
+      alert(`Successfully deleted URL: ${result.deletedUrl.redirectUrl}`);
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    try {
-      getAllUrl();
-    } catch (error) {
-      console.log(error);
-    }
+    getAllUrl();
   }, []);
 
   return (
-    <div>History
-      {allUrl && <div>
-        {allUrl.map((item, index) => <div key={index}>
-          <p>id:{item.shortId} url:{item.redirectUrl}</p>
-          <button onClick={() => handleLikedUrl(item._id, item.liked)}>{item.liked ? <p>Unlike</p> : <p>Like</p>}</button>
-          <button onClick={() => handleDeleteUrl(item._id)}>Delete</button>
-        </div>)}
-      </div>}
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-orange-900 text-white px-4 py-6">
+      <h1 className="text-2xl font-bold mb-6 text-center">Your URL History</h1>
+
+      {loading ? (
+        <p className="text-center text-gray-300">Loading your URLs...</p>
+      ) : allUrl && allUrl.length > 0 ? (
+        <div className="space-y-4 max-w-xl mx-auto">
+          {allUrl.map((item, index) => (
+            <div
+              key={index}
+              className="bg-black/60 p-4 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
+                <LinkIcon size={18} className="text-orange-400 hidden sm:block" />
+                <a
+                  href={`https://${item.redirectUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-400 hover:underline break-all"
+                >
+                  shorturl/{item.shortId}
+                </a>
+              </div>
+
+              <div className="flex space-x-3 mt-2 sm:mt-0">
+                <button
+                  onClick={() => handleLikedUrl(item._id, item.liked)}
+                  className="hover:text-orange-400 transition"
+                  title={item.liked ? "Unlike" : "Like"}
+                >
+                  {item.liked ? <ThumbsDown size={20} /> : <ThumbsUp size={20} />}
+                </button>
+                <button
+                  onClick={() => handleDeleteUrl(item._id)}
+                  className="hover:text-red-400 transition"
+                  title="Delete"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-300">No URLs found. Start shortening your links!</p>
+      )}
     </div>
-  )
+  );
 }
 
-export default History
+export default History;
