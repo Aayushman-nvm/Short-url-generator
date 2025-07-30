@@ -6,10 +6,11 @@ function Favourites() {
   const userId = useSelector((state) => state.user._id);
   const [allUrl, setAllUrl] = useState([]);
   const [loading, setLoading] = useState(true);
+  const apiUrl=import.meta.env.VITE_API_URL;
 
   async function getAllUrl() {
     try {
-      const response = await fetch("http://localhost:5000/favourites", {
+      const response = await fetch(`${apiUrl}/favourites`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: userId }),
@@ -26,7 +27,7 @@ function Favourites() {
 
   async function handleLikedUrl(urlId, likeStatus) {
     try {
-      const response = await fetch("http://localhost:5000/likes", {
+      const response = await fetch(`${apiUrl}/likes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: urlId, liked: likeStatus }),

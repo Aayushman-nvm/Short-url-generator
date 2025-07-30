@@ -9,6 +9,7 @@ function HomePage() {
   const user = useSelector((state) => state?.user);
   const token = useSelector((state) => state.token);
   const userId = user._id;
+  const apiUrl=import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     console.log(reqUrl);
@@ -28,7 +29,7 @@ function HomePage() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/url", {
+      const response = await fetch(`${apiUrl}/url`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: reqUrl, id: userId }),
@@ -47,7 +48,7 @@ function HomePage() {
 
   async function handleLike() {
     try {
-      const response = await fetch("http://localhost:5000/likes", {
+      const response = await fetch(`${apiUrl}/likes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: data._id, liked: data.liked }),

@@ -6,10 +6,11 @@ function History() {
   const userId = useSelector((state) => state.user._id);
   const [allUrl, setAllUrl] = useState([]);
   const [loading, setLoading] = useState(true);
+  const apiUrl=import.meta.env.VITE_API_URL;
 
   async function getAllUrl() {
     try {
-      const response = await fetch("http://localhost:5000/history", {
+      const response = await fetch(`${apiUrl}/history`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: userId }),
@@ -25,7 +26,7 @@ function History() {
 
   async function handleLikedUrl(urlId, likeStatus) {
     try {
-      const response = await fetch("http://localhost:5000/likes", {
+      const response = await fetch(`${apiUrl}/likes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: urlId, liked: likeStatus }),
@@ -45,7 +46,7 @@ function History() {
 
   async function handleDeleteUrl(urlId) {
     try {
-      const response = await fetch("http://localhost:5000/delete", {
+      const response = await fetch(`${apiUrl}/delete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: urlId, userId: userId }),

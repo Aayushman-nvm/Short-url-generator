@@ -13,6 +13,7 @@ function Login() {
   const isRegister = pageType === "register";
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const apiUrl=import.meta.env.VITE_API_URL;
 
   const loginSchema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Required"),
@@ -29,7 +30,7 @@ function Login() {
   const initialValuesRegister = { email: "", password: "", name: "" };
 
   async function handleRegister(values, onSubmitProps) {
-    const response = await fetch("http://localhost:5000/register", {
+    const response = await fetch(`${apiUrl}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -40,7 +41,7 @@ function Login() {
   }
 
   async function handleLogin(values, onSubmitProps) {
-    const response = await fetch("http://localhost:5000/login", {
+    const response = await fetch(`${apiUrl}/login`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(values),
